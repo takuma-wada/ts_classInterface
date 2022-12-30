@@ -27,7 +27,15 @@ class Department {
         console.log(this.employees);
     }
 }
+const department = new Department('d1', 'department');
+department.describe();
+department.addEmployees('test1');
+department.addEmployees('test2');
+department.printEmployeeInfomation();
+// private だからアクセスできない
+// department.employees[2] = 'test3';
 class ITDepartment extends Department {
+    // super は継承元のconstructorに値を渡す
     constructor(id, admins) {
         super(id, 'IT');
         this.admins = admins;
@@ -39,16 +47,26 @@ class ITDepartment extends Department {
         this.employees.push(emplpoyee);
     }
 }
-const accounting = new Department('d1', 'accounting');
+const ItDepartment = new ITDepartment('d2', ['max']);
+// superをしているからここで出力できる
+ItDepartment.describe();
+ItDepartment.addEmployees('it test1');
+ItDepartment.addEmployees('Max');
+ItDepartment.addEmployees('it test2');
+ItDepartment.printEmployeeInfomation();
+class AccountingDepartment extends Department {
+    constructor(id, report) {
+        super(id, 'Accounting');
+        this.report = report;
+    }
+    addReport(text) {
+        this.report.push(text);
+    }
+    printReports() {
+        console.log(this.report);
+    }
+}
+const accounting = new AccountingDepartment('d3', []);
 accounting.describe();
-accounting.addEmployees('test1');
-accounting.addEmployees('test2');
-accounting.printEmployeeInfomation();
-// private だからアクセスできない
-// accounting.employees[2] = 'test3';
-const ItAccounting = new ITDepartment('d1', ['max']);
-ItAccounting.describe();
-ItAccounting.addEmployees('it test1');
-ItAccounting.addEmployees('Max');
-ItAccounting.addEmployees('it test2');
-ItAccounting.printEmployeeInfomation();
+accounting.addReport('something');
+accounting.printReports();
