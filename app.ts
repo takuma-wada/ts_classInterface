@@ -78,12 +78,27 @@ ItDepartment.printEmployeeInfomation();
 
 class AccountingDepartment extends Department
 {
+    private lastReport: string;
+
+    get mostReacentReport() {
+        if (!this.lastReport) throw new Error('レポートが存在しません');
+
+        return this.lastReport;
+    }
+
+    set mostReacentReport(value: string) {
+        if (!value) throw new Error('正しい値に設定してください');
+        this.addReport(value);
+    }
+
     constructor(id: string, private report: string[]) {
         super(id, 'Accounting');
+        this.lastReport = report[0];
     }
 
     addReport(text: string) {
         this.report.push(text);
+        this.lastReport = text;
     }
 
     printReports() {
@@ -92,6 +107,15 @@ class AccountingDepartment extends Department
 }
 
 const accounting = new AccountingDepartment('d3', []);
+// getterはプロパティのようにドット(.)でアクセスできる
+// これはreportがないからエラーになる
+// console.log(accounting.mostReacentReport);
+
+// setterもgetter同様プロパティのようにアクセスできる。
+// 代入するように使う
+// accounting.mostReacentReport = ''; 空の為、エラーになる
 accounting.describe();
-accounting.addReport('something');
+accounting.mostReacentReport = '通期会計レポート';
+console.log('--- accounting.mostReacentReport ---');
+console.log(accounting.mostReacentReport);
 accounting.printReports();
